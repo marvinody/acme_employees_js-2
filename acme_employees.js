@@ -1,11 +1,3 @@
-// const spacer = text => {
-//   if (!text) {
-//     return console.log("");
-//   }
-//   const stars = new Array(5).fill("*").join("");
-//   console.log(`${stars} ${text} ${stars}`);
-// };
-// spacer("segiewgiuerg");
 const employees = [
   { id: 1, name: "moe" },
   { id: 2, name: "larry", managerId: 1 },
@@ -16,28 +8,44 @@ const employees = [
   { id: 8, name: "shep Jr.", managerId: 4 },
   { id: 99, name: "lucy", managerId: 1 }
 ];
-
+//
+//
+//
+//
+//
 function findEmployeeByName(name, employeesArr) {
   return employeesArr.filter(curr => curr["name"] === name);
 }
-
+//
+//
+//
+//
+//
 function findManagerFor(employee, employeesArr) {
   employee = findEmployeeByName(employee, employeesArr);
-  // if (employeesArr.find(curr => employee["managerId"] === curr["id"])) {
-  return employeesArr.filter(curr => employee["managerId"] === curr["id"]);
-  // } else {
-  // return employee;
-  // }
+  const manager = employeesArr.filter(
+    curr => employee["managerId"] === curr["id"]
+  );
+  if (manager.length > 0) return manager;
+  return employee;
 }
-
+//
+//
+//
+//
+//
 function findCoworkersFor(employee, employeesArr) {
-  // employee = findEmployeeByName(employee, employeesArr);
+  employee = findEmployeeByName(employee, employeesArr);
   return employeesArr.filter(curr => {
     findManagerFor(curr, employeesArr) ===
       findManagerFor(employee, employeesArr);
   });
 }
-
+//
+//
+//
+//
+//
 function findManagementChainForEmployee(employee, employeesArr) {
   employee = findEmployeeByName(employee, employeesArr);
   let returnArr = [];
@@ -56,6 +64,7 @@ function findManagementChainForEmployee(employee, employeesArr) {
     }
   }
   return returnArr.reverse();
+  //     (attempted with recursion)
   // if (returnArr[0]) {
   //   if (returnArr[0]["id"] === 1) return returnArr;
   // }
@@ -71,14 +80,6 @@ function findManagementChainForEmployee(employee, employeesArr) {
   //   findManagementChainForEmployee(employee, employeesArr)
   // );
 }
-
-// [
-//   { id: 1, name: 'moe' },
-//   { id: 2, name: 'larry', managerId: 1 },
-//   { id: 4, name: 'shep', managerId: 2 }
-// ]
-// console.log(findManagementChainForEmployee("shep Jr.", employees));
-//
 //
 //
 //
@@ -104,20 +105,18 @@ function generateManagementTree(arr) {
 }
 console.log(JSON.stringify(generateManagementTree(employees), null, 2));
 
-function displayManagementTree(tree) {
-  let returnStr = "";
-  function findInTree(obj, str) {
-    if (tree["name"] === obj["name"]) {
-      str += tree["name"];
-      // if ()
-      return str;
-    }
-    str += "-";
-    return str + obj["reports"].forEach(curr => findInTree(curr, str));
-  }
-  findInTree(tree, returnStr);
-  return returnStr;
-}
-console.log(Object.entries(generateManagementTree(employees), null, 2));
-
-console.log(displayManagementTree(generateManagementTree(employees)));
+// function displayManagementTree(tree) {
+//   let returnStr = "";
+//   function findInTree(obj, str) {
+//     if (tree["name"] === obj["name"]) {
+//       str += tree["name"];
+//       // if ()
+//       return str;
+//     }
+//     str += "-";
+//     return str + obj["reports"].forEach(curr => findInTree(curr, str));
+//   }
+//   findInTree(tree, returnStr);
+//   return returnStr;
+// }
+// console.log(displayManagementTree(generateManagementTree(employees)));
