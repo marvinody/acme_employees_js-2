@@ -23,11 +23,15 @@ function findEmployeeByName(name, employeesArr) {
 
 function findManagerFor(employee, employeesArr) {
   employee = findEmployeeByName(employee, employeesArr);
+  // if (employeesArr.find(curr => employee["managerId"] === curr["id"])) {
   return employeesArr.filter(curr => employee["managerId"] === curr["id"]);
+  // } else {
+  // return employee;
+  // }
 }
 
 function findCoworkersFor(employee, employeesArr) {
-  employee = findEmployeeByName(employee, employeesArr);
+  // employee = findEmployeeByName(employee, employeesArr);
   return employeesArr.filter(curr => {
     findManagerFor(curr, employeesArr) ===
       findManagerFor(employee, employeesArr);
@@ -35,26 +39,85 @@ function findCoworkersFor(employee, employeesArr) {
 }
 
 function findManagementChainForEmployee(employee, employeesArr) {
-  let returnArr = [];
   employee = findEmployeeByName(employee, employeesArr);
-  if (returnArr[0]) {
-    if (returnArr[0]["id"] === 1) return returnArr;
+  let returnArr = [];
+  let idToFind = employee[0]["managerId"];
+  for (let i = 0; idToFind > 0; i++) {
+    for (let j = 0; j < employeesArr.length; j++) {
+      if (employeesArr[j]["id"] === idToFind) {
+        if (idToFind === 1) {
+          returnArr.push(employeesArr[j]);
+          idToFind--;
+        } else {
+          idToFind = employeesArr[j]["managerId"];
+          returnArr.push(employeesArr[j]);
+        }
+      }
+    }
   }
-  returnArr.unshift(
-    employeesArr.find(curr => {
-      curr["id"] === employee["managerId"];
-    })
-  );
-  employee = returnArr[0];
-  return returnArr.concat(
-    findManagementChainForEmployee(employee, employeesArr)
-  );
+  return returnArr.reverse();
+  // if (returnArr[0]) {
+  //   if (returnArr[0]["id"] === 1) return returnArr;
+  // }
+  // returnArr.unshift(
+  //   employeesArr.find(curr => {
+  //     curr["id"] === employee["managerId"];
+  //   })
+  // );
+  // employee = employeesArr.find(curr => {
+  //   curr["id"] === employee["managerId"];
+  // });
+  // return returnArr.concat(
+  //   findManagementChainForEmployee(employee, employeesArr)
+  // );
 }
 
-console.log(
-  findManagementChainForEmployee(
-    findEmployeeByName("shep Jr.", employees),
-    employees
-  )
-);
-// console.log(findEmployeeByName("shep", employees));
+// [
+//   { id: 1, name: 'moe' },
+//   { id: 2, name: 'larry', managerId: 1 },
+//   { id: 4, name: 'shep', managerId: 2 }
+// ]
+// console.log(findManagementChainForEmployee("shep Jr.", employees));
+//
+//
+//
+//
+function generateManagementTree(arr) {
+  const boss = arr.find(curr => curr["managerId"] === undefined);
+
+  function findReporters(currEmployee, arr) {
+    currEmployee["reports"] = [];
+    const reporters = arr.filter(employee => {
+      return employee["managerId"] === currEmployee["id"];
+    });
+
+    if (reporters === "undefined") {
+      return currEmployee.reports.concat([]);
+    }
+
+    currEmployee["reports"] = reporters;
+    reporters.forEach(rep => findReporters(rep, arr));
+    return currEmployee;
+  }
+  findReporters(boss, arr);
+  return boss;
+}
+console.log(JSON.stringify(generateManagementTree(employees), null, 2));
+
+function displayManagementTree(tree) {
+  let returnStr = "";
+  function findInTree(obj, str) {
+    if (tree["name"] === obj["name"]) {
+      str += tree["name"];
+      // if ()
+      return str;
+    }
+    str += "-";
+    return str + obj["reports"].forEach(curr => findInTree(curr, str));
+  }
+  findInTree(tree, returnStr);
+  return returnStr;
+}
+console.log(Object.entries(generateManagementTree(employees), null, 2));
+
+console.log(displayManagementTree(generateManagementTree(employees)));
