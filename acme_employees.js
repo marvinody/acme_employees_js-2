@@ -103,20 +103,72 @@ function generateManagementTree(arr) {
   findReporters(boss, arr);
   return boss;
 }
+
 console.log(JSON.stringify(generateManagementTree(employees), null, 2));
 
+const tree = {
+  id: 1,
+  name: "moe",
+  reports: [
+    {
+      id: 2,
+      name: "larry",
+      managerId: 1,
+      reports: [
+        {
+          id: 4,
+          name: "shep",
+          managerId: 2,
+          reports: [
+            {
+              id: 8,
+              name: "shep Jr.",
+              managerId: 4,
+              reports: []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 3,
+      name: "curly",
+      managerId: 1,
+      reports: [
+        {
+          id: 5,
+          name: "groucho",
+          managerId: 3,
+          reports: [
+            {
+              id: 6,
+              name: "harpo",
+              managerId: 5,
+              reports: []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 99,
+      name: "lucy",
+      managerId: 1,
+      reports: []
+    }
+  ]
+};
+
 // function displayManagementTree(tree) {
-//   let returnStr = "";
-//   function findInTree(obj, str) {
-//     if (tree["name"] === obj["name"]) {
-//       str += tree["name"];
-//       // if ()
-//       return str;
-//     }
-//     str += "-";
-//     return str + obj["reports"].forEach(curr => findInTree(curr, str));
-//   }
-//   findInTree(tree, returnStr);
-//   return returnStr;
+//   let returnStr = `${tree["name"]}\n`;
+//   if (tree["reports"].length === 0) return returnStr;
+//   return (
+//     returnStr +
+//     `${tree["reports"].forEach(curr => {
+//       returnStr += "-";
+//       return displayManagementTree(curr);
+//     })}`
+//   );
 // }
-// console.log(displayManagementTree(generateManagementTree(employees)));
+// NOT WORKING. Couldn't do it.
+// console.log(displayManagementTree(tree));
