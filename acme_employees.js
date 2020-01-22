@@ -13,7 +13,10 @@ const employees = [
 //
 //
 //
+// great variable names
 function findEmployeeByName(name, employeesArr) {
+  // I like seeing array methods, but take note of what the method is supposed to return
+  // and what you're actually returning
   return employeesArr.filter(curr => curr.name === name)
 }
 //
@@ -22,10 +25,13 @@ function findEmployeeByName(name, employeesArr) {
 //
 //
 function findManagerFor(employee, employeesArr) {
+  // and in this function, the first parameter IS already the object
+  // so you actually are doing extra work!
   employee = findEmployeeByName(employee, employeesArr)
   const manager = employeesArr.filter(
     curr => employee.managerId === curr.id
   )
+  // similar idea here, what does filter return and what do we want
   if (manager.length > 0) return manager
   return employee
 }
@@ -34,18 +40,24 @@ function findManagerFor(employee, employeesArr) {
 //
 //
 //
+// I like the idea of the approach, filtering based on similar managers!
 function findCoworkersFor(employee, employeesArr) {
   employee = findEmployeeByName(employee, employeesArr)
-  return employeesArr.filter(curr => {
+  return employeesArr.filter(curr => { // <- having that bracket MEANS you need an explicit return
+    // be wary of implicit and explicit returns with arrow functions
     findManagerFor(curr, employeesArr) ===
       findManagerFor(employee, employeesArr)
   })
 }
+
+console.log(findManagementChainForEmployee(employees[6].name, employees))
 //
 //
 //
 //
 //
+// I never thought of doing this iteratively! wow!!
+// I think this could be optimized slightly, but great!
 function findManagementChainForEmployee(employee, employeesArr) {
   employee = findEmployeeByName(employee, employeesArr)
   let returnArr = []
@@ -83,6 +95,10 @@ function findManagementChainForEmployee(employee, employeesArr) {
 //
 //
 //
+
+// so this is written by mutating the array
+// would it be possible to write it without mutations?
+// we can talk about why that may or may not be a cool thing to do during office hours if you want
 function generateManagementTree(arr) {
   const boss = arr.find(curr => curr.managerId === undefined)
 
@@ -159,6 +175,8 @@ const tree = {
   ]
 }
 
+// I like the recursive idea here and adding some kind of '-'
+// good base case too!
 // function displayManagementTree(tree) {
 //   let returnStr = `${tree["name"]}\n`;
 //   if (tree["reports"].length === 0) return returnStr;
